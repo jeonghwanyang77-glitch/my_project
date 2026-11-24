@@ -1,2 +1,2 @@
 # my_project
-git 연
+git 연습
