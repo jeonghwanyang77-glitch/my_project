@@ -20,6 +20,11 @@ app.mount("/static", Staticfiles(directory="static"), name="static")
 def home(req: Request): # 요청객체가 함수 인자로 전달됨
     # 비즈니스 로직 => 로직
     # 응답 => 결론은 문자열 (json 형식, html 형식, xml 형식, ...)
+    # 클라이언트 요청 (주소 : http://localhost/) -> .. -> 서버 도착 -> URL, 메소드 해석 -> 어떤 함수가 처리할지 특정 후 호출 ->
+    # 비즈니스 로직 진행(로그인, 회원가입, ..)
+    # -> 응답 (json, html (템플릿엔진이용 html, 데이터 => 동적으로 html 구성 => 렌더링), xml, ...)
+    # -> 클라이언트 브라우저 도착 -> 브라우저 파서가 파싱, Dom tree등 처리 -> 화면에 그리기 시작
+    # -> 클라이언트는 화면을 보게 됨
     return templates.TemplateResponse(req, "index.html")
 
 
