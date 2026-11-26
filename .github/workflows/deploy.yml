@@ -1,47 +1,29 @@
 name: Push 기반 CI/CD 테스트
 
+# container 브런치에서 push 이벤트 발생 시 처리(작동)
 on:
     push:
-        branches:
-            - main
+        # 브런치가 n개로 늘어나는 경우 효율적 표현
+        branches: [ "container" ]
 
 jobs:
-    cicd:
-        runs-on: ubuntu-latest
+    ci:
+      runs-on: ubuntu-latest
+      steps:
+        # 1. 소스코드 체크아웃, 소스코드를 ci서버에 다운로드
+        - name: 코드 checkout
+          uses: actions/checkout@v5
+        # 2. 도커허브 로그인
+        # 3. fastapi app 이미지 빌드 푸시
+        # 4. nginx proxy 이미지 빌드 푸시
 
-        steps:
-            - name: 코드 checkout
-              uses: actions/checkout@v5
-            
-            - name: 소스코드 확인 검증
-              run:  |
-                pwd
-                ls -al
-                cat main.py
-              shell:  bash
-
-            - name: sourcecode copy to EC2
-              uses: appleboy/scp-action@master
-              with:
-                # 시크릿 변수를 가져와서 설정 내용
-                host: ${{ secrets.HOST }}
-                username: ${{ secrets.USERNAME }}
-                key: ${{ secrets.EC2_KEY }}
-                port: 22
-                source: .
-                target: "/home/ubuntu/projects"
-            
-            - name: Restart Service
-              uses: appleboy/ssh-action@master
-              with:
-                host: ${{ secrets.HOST }}
-                username: ${{ secrets.USERNAME }}
-                key: ${{ secrets.EC2_KEY }}
-                port: 22
-                script: |
-                  # 코드가 엄청 증가, 새로운 패키지 사용하여 업데이트 -> 패키지 설치 필요
-                  # 가상환경 활성화 -> 패키지 설치 추가되어야 함
-                  # cd /home/ubuntu/projects
-                  # ./web/bin/pip install -r requirements.txt
-                  # restart : stop -> start
-                  sudo systemctl restart hello.service
+    cd:
+      # ci 작업이 완료된 후 진행됨 -> 의존성 기술
+      needs: ci
+      runs-on: ubuntu-latest
+      steps:
+        # 1. 소스코드 체크아웃
+        - name: 코드 checkout
+          uses: actions/checkout@v5
+        # 2. docker-compose.yml 파일만 ec2 서버에 copy
+        # 3. ec2 서버에서 컨테이너 교체, 미사용 이미지 제거
