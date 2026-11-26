@@ -52,3 +52,15 @@ tree /F /A >> struct.txt
 |       Dockerfile
 |       web.conf
 ```
+
+# 개발 환경(로컬 PC) 구동
+```
+# 컨테이너 구성
+docker-compose up -d --build
+
+# 다시 구성
+docekr-compose down
+
+# 접속 테스트, 브라우저
+http://localhost
+```
