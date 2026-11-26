@@ -29,7 +29,7 @@ jobs:
             context: ./app
             file: ./app/Dockerfile
             push: true
-            tags: ${{ secrets.USERNAME }}/fastapi-app:1.0
+            tags: ${{ secrets.DOCKER_USERNAME }}/fastapi-app:1.0
 
         # 4. nginx proxy 이미지 빌드 푸시
         - name: build & push nginx proxy
@@ -38,7 +38,7 @@ jobs:
             context: ./nginx
             file: ./nginx/Dockerfile
             push: true
-            tags: ${{ secrets.USERNAME }}/nginx-proxy:1.0
+            tags: ${{ secrets.DOCKER_USERNAME }}/nginx-proxy:1.0
 
     cd:
       # ci 작업이 완료된 후 진행됨 -> 의존성 기술
