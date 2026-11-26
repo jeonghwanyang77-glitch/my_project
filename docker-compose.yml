@@ -20,7 +20,7 @@ services:
     # ec2에서 컴포즈가 가동할 때는 image: <dockerhub계정>/fastapi-app:1.0 변경
     # 이미지는 ci서버에서 생성함
     #build: ./app
-    image: yajh123/fastapi-app:1.0
+    image: my_project/fastapi-app:1.0
     container_name: fastapi_app
     restart: unless-stopped
     ports:
@@ -40,7 +40,7 @@ services:
     # 추후 이미지는 ci에서 처리, ec2 컴포즈에서는 image: <dockerhub계정>/nginx-proxy:1.0 변경
     #image: nginx:alpine
     #build: ./nginx
-    image: yajh123/nginx-proxy:1.0
+    image: my_project/nginx-proxy:1.0
     container_name: nginx_proxy
     restart: unless-stopped
     ports:
